@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+#=======================HEADER======================================|
+#AUTOR
+# Jefferson Rocha <root@slackjeff.com.br>
+#
+#PROGRAMA
+# Alce - Seu dia mais legal :)
+#
+#LICENÇA
+# MIT
+#
+#CHANGELOG
+# https://notabug.org/slackjeff/alce/src/master/CHANGELOG
+#===================================================================|
+
+#===========VARIAVEIS
+color_random=$((($RANDOM % 7)+1))
+color=$(tput bold; tput setaf "$color_random")
+end=$(tput sgr0)
+
+
+#===========Dicionario
+frases=(
+ 'Ubuntu é bem legal, utilize.'
+ 'O importante não é vencer todos os dias,\nmas lutar sempre.'
+ 'É melhor conquistar a si mesmo do que vencer mil batalhas.'
+ 'Enquanto houver vontade de lutar...\nhaverá esperança de vencer.'
+ 'Difícil é ganhar um amigo em uma hora...\nFácil é ofendê-lo em um minuto'
+ 'O medo de perder tira a vontade de ganhar.'
+ 'Arriscamo-nos a perder quando queremos ganhar demais.'
+ 'Escolher o seu tempo é ganhar tempo.'
+ 'Use Slackware Linux.'
+ 'Isso aqui é feito em Shell...\nAdversário de cowsay'
+ 'Muitos sabem ganhar dinheiro, mas poucos sabem gastá-lo.'
+ 'Perder para a razão, sempre é ganhar.'
+ 'Não basta conquistar a sabedoria, é preciso usá-la.'
+ 'É fácil adquirir um inimigo...\ndifícil é conquistar um amigo.'
+ 'De nada serve ao homem conquistar a Lua!\nSe acaba por perder a Terra.'
+ 'Você sabe pelo que vale a pena lutar?'
+ 'Para vencer na vida, é necessário fazer com entusiasmo.'
+ 'Eu sei ganhar e você?'
+ 'Realidade é meramente uma ilusão.\nAinda que bastante persistente.'
+ 'O fedora ja me deu dor de cabeça.'
+ 'Se a inveja tem sono leve, não tem problema.\nQuem me protege nunca dorme!'
+ 'Duvide do que vem fácil. E não desista do que é difícil.'
+ 'Às vezes o apoio e o conforto que você precisa,\nvem de onde você menos espera.'
+ 'Talvez por serem tão curtas as férias são intensas,\nmas deixam também um sabor amargo.'
+ 'Confiança é como uma borracha...\nFica menor a cada erro cometido.'
+ 'A falta de amor é a pior de todas as pobrezas.'
+ 'Ninguém nunca vai entender o que você sente...\naté passar pela mesma situação.'
+ 'Pendura a alma no varal e deixe que as coisas ruins evaporem.'
+ 'A prepotência te faz forte por um dia; a humildade, para sempre.'
+ 'Acredite: nem tudo o que é belo irá fazer-te bem quando te tocar.'
+ 'E mesmo sozinho, o Sol nunca deixou de brilhar.'
+ 'Nem sempre quem está do seu lado, está com você.'
+ 'Os pequenos detalhes são sempre os mais importantes.'
+ 'É impossível progredir sem mudança, e aqueles que não\nmudam suas mentes não podem mudar nada.'
+ 'Não corra atrás...De quem sabe onde te encontrar.'
+ 'Quem tem luz própria, incomoda quem está no escuro.'
+ 'Algumas palavras te destroem. Outras te fortalecem...'
+ 'O Sol caminha devagar mas atravessa o mundo.'
+ 'Deixa algum sinal de alegria por onde passes.'
+ 'Primeiro a chuva, depois o arco-íris...\nSe acostume, a ordem é essa.'
+ 'Viva o hoje, pois o ontem já se foi,\ne o amanhã talvez não venha.'
+ 'Nada na vida é em vão e as dificuldades de hoje\nserão importantes aprendizados de amanhã!'
+ 'Imagine o seu mundo perfeito;\nagora lute para o tornar real!'
+ 'O caminho da felicidade às vezes\né feito de grandes sacrifícios.'
+ 'Nós colhemos o fruto das verdadeiras amizades\nnos terrenos mais pedregosos e ressequidos da vida.'
+ 'Carinho é o óleo que lubrifica as engrenagens da vida.'
+ 'Pode não dar certo, mas você só vai saber se arriscar.'
+ 'A falta de amor é a pior de todas as pobrezas.'
+ 'A prepotência te faz forte por um dia;\na humildade, para sempre.'
+ 'Acredite: nem tudo o que é belo irá fazer-te\nbem quando te tocar.'
+ 'Os pequenos detalhes são sempre os mais importantes.'
+ 'Sorria, só ria. Acalma, a alma. Se derrame, se der ame.\nReleve, se eleve. Respira, e não pira.'
+ 'Pra hoje: sorrisos bobos, uma mente tranquila\num coração cheio de paz.'
+ 'Enquanto alguns escolhem pessoas perfeitas,\neu escolho as que me fazem bem.'
+ 'Seja você mesmo, todos os outros já existem.'
+ 'Uma das melhores sensações da vida é ter a certeza\nque você pode confiar em alguém.'
+ 'Às vezes pequenas palavras dizem grandes coisas.'
+ 'Não existe um caminho para a felicidade.\nA felicidade é o caminho.'
+ 'Todos sabem fazer história.\nMas só os grandes sabem escrevê-la.'
+ 'Já me senti Triste...\nAi eu fui e criei um programa em Shell.'
+ 'As derrotas da vida conduzem às maiores vitórias.'
+ 'Slackjeff, The Shell Boss.'
+ 'Um dia esse mundo irá lembrar o meu nome.'
+ 'Você é forte o suficiente para transformar as maiores\ndecepções em grandes lições.'
+ 'Nada nos torna tão grandes como uma grande dor.'
+ 'Não ter razão para ficar, é uma ótima razão para ir.'
+ 'Não confunda o que você merece com o que você aceita!'
+ 'Liberdade é pouco. O que eu desejo ainda não tem nome.'
+ 'Eu gosto do impossível porque lá a concorrência é menor.'
+ 'Em frente… Ou enfrente!'
+ 'Qualquer coisa que custe a sua paz é muito cara.'
+ 'Enquanto buscam o sentido da vida, eu vivo ela.'
+ 'Não deixe o ruído das opiniões dos outros\nabafar a sua própria voz interior.'
+ 'Quando eu quero eu vou atrás, assim que é!'
+ 'Mentes são como para-quedas. Só funcionam abertas!'
+ 'O importante é o que importa.'
+ 'Já perdi a conta de quantas vezes o computador travou.'
+ 'HD é igual EX, sempre dá Pau.'
+ 'Minha paciência é igual dinheiro, não tenho e quando tenho some rápido.'
+ 'Soldado, não te vi na aula de camuflagem hoje. - Obrigado capitão.'
+ 'Encontrei o seu nariz. Ele estava onde não foi chamado.'
+)
+# Pegando numero total de indices
+# e fazendo aritmetica para randomizar
+indi="${#frases[@]}"
+frase_random=$(($RANDOM % $indi))
+
+#===========FUNCOES
+_LOGO()
+{  # Abertura do Here document
+echo -e "${color}${frases[$frase_random]}${end}"
+   cat <<FIM
+      \\
+       \\
+       (_\/__\/_)
+          (oo)
+~/---------\/
+ |        ||
+ ||x------||
+ ||       ||
+ ^^       ^^
+FIM
+}
+
+#===========PRINCIPAL
+_LOGO #chamando funcao
